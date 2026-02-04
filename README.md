@@ -1,7 +1,7 @@
 <img width="240" height="238" alt="Screenshot 2026-01-28 180810" src="https://github.com/user-attachments/assets/21a9a26a-d90f-49da-9363-1be7fffef042" />
 
 #  LeafLens: AI Plant Disease & Species Detection System
-
+Live Application	🚀 View Live Demo -: https://leaf-lens-green.vercel.app/
 
 **LeafLens** is an intelligent full-stack web application designed to bridge the gap between AI technology and botany. By leveraging advanced machine learning APIs, the system identifies plant species and detects potential diseases from a single image, providing actionable insights for farmers, gardeners, and researchers.
 
