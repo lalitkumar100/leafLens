@@ -1,73 +1,166 @@
-# Welcome to your Lovable project
+<img width="240" height="238" alt="Screenshot 2026-01-28 180810" src="https://github.com/user-attachments/assets/21a9a26a-d90f-49da-9363-1be7fffef042" />
 
-## Project info
+#  LeafLens: AI Plant Disease & Species Detection System
 
-**URL**: https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID
 
-## How can I edit this code?
+**LeafLens** is an intelligent full-stack web application designed to bridge the gap between AI technology and botany. By leveraging advanced machine learning APIs, the system identifies plant species and detects potential diseases from a single image, providing actionable insights for farmers, gardeners, and researchers.
 
-There are several ways of editing your application.
+## 🚀 Features
 
-**Use Lovable**
+* **📷 Precision Image Upload** – Seamlessly upload plant or leaf images for instant processing.
+* **🧠 AI-Driven Analysis** – Deep learning models identify plant species and specific health issues.
+* **🌡️ Comprehensive Disease Insights** – Detailed reports including:
+* **Diagnosis:** Disease name and confidence score.
+* **Anatomy of Issue:** Symptoms and root causes.
+* **Action Plan:** Targeted treatment suggestions and long-term prevention tips.
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and start prompting.
 
-Changes made via Lovable will be committed automatically to this repo.
+* **🖼️ Visual Comparison** – Dedicated section to compare healthy vs. diseased plant characteristics.
+* **⚡ High-Performance UI** – Built with Vite and Tailwind CSS for sub-second responsiveness.
+* **☁️ Scalable Architecture** – Decoupled frontend and backend ready for cloud deployment.
 
-**Use your preferred IDE**
+---
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+## 🏗️ Tech Stack
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+### **Frontend**
 
-Follow these steps:
+* **Framework:** React.js (Vite)
+* **Language:** JavaScript / TypeScript
+* **Styling:** Tailwind CSS + shadcn/ui
+* **State/Data:** Axios for asynchronous API communication
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+### **Backend**
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+* **Runtime:** Node.js
+* **Framework:** Express.js
+* **Middleware:** Multer (Image Handling), CORS, Dotenv
+* **Intelligence:** Integrated Plant Analysis AI API
 
-# Step 3: Install the necessary dependencies.
-npm i
+---
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
+## 📂 Project Structure
+
+```text
+plant-ai-app/
+├── frontend/             # React Vite Application
+│   ├── src/
+│   ├── components/       # Reusable UI components (shadcn)
+│   ├── pages/            # Application views
+│   └── main.jsx
+├── backend/              # Node.js Express Server
+│   ├── routes/           # API Endpoints
+│   ├── controllers/      # Business logic & AI Integration
+│   ├── uploads/          # Temporary image storage
+│   └── server.js         # Entry point
+└── README.md
+
 ```
 
-**Edit a file directly in GitHub**
+---
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+## ⚙️ Local Development Setup
 
-**Use GitHub Codespaces**
+### 1. Clone the Repository
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+```bash
+git clone https://github.com/lalitkumar100/leafLens
+cd LeafLens
 
-## What technologies are used for this project?
+```
 
-This project is built with:
+### 2. Backend Configuration
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+```bash
+cd backend
+npm install
 
-## How can I deploy this project?
+```
 
-Simply open [Lovable](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and click on Share -> Publish.
+Create a `.env` file in the `/backend` directory:
 
-## Can I connect a custom domain to my Lovable project?
+```env
+PORT=5000
+GEMINI_API_KEY=your_api_key_here
 
-Yes, you can!
+```
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+Start the server:
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+```bash
+npm start
+
+```
+
+### 3. Frontend Configuration
+
+```bash
+cd ../frontend
+npm install
+npm run dev
+
+```
+
+```env
+VITE_BACKEND_URL=http://localhost:5173
+
+```
+
+The application will be available at `http://localhost:5173`.
+
+---
+
+## 🔁 System Workflow
+
+1. **Input:** User uploads a leaf image via the React frontend.
+2. **Transit:** The image is sent to the Express backend using a `multipart/form-data` request.
+3. **Processing:** The backend communicates with the AI API to analyze the image.
+4. **Response:** A structured JSON object is returned to the frontend.
+5. **Visualization:** The UI renders a detailed health card with treatments and prevention steps.
+
+### **Example JSON Response**
+
+```json
+{
+  "plantName": "Tomato",
+  "disease": "Early Blight",
+  "confidence": "92%",
+  "symptoms": "Brown spots with concentric rings on older leaves",
+  "causes": "Alternaria solani fungus",
+  "treatment": "Apply copper-based fungicides; prune lower foliage.",
+  "prevention": "Rotate crops and ensure proper soil drainage."
+}
+
+```
+
+---
+
+## 🧪 Future Roadmap
+
+* [ ] **Database Expansion:** Increase coverage for rare tropical plant species.
+* [ ] **Severity Scoring:** Implement a percentage-based health score for the plant.
+* [ ] **Geolocation:** Suggest common diseases based on the user's local climate.
+* [ ] **Offline Support:** Implement lightweight TensorFlow.js models for edge detection.
+
+---
+
+## 🤝 Contributing
+
+Contributions make the open-source community an amazing place to learn and create.
+
+1. Fork the Project.
+2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`).
+3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`).
+4. Push to the Branch (`git push origin feature/AmazingFeature`).
+5. Open a Pull Request.
+
+---
+
+## 📜 License
+
+Distributed under the **MIT License**.
+
+## 👨‍💻 Author
+
+**Lalitkumar Choudhary**
+*Full Stack Developer | Computer Science Engineer*
