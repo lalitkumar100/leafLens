@@ -42,17 +42,16 @@ Live Application	🚀 View Live Demo -: https://leaf-lens-green.vercel.app/
 ## 📂 Project Structure
 
 ```text
-plant-ai-app/
-├── frontend/             # React Vite Application
-│   ├── src/
-│   ├── components/       # Reusable UI components (shadcn)
-│   ├── pages/            # Application views
-│   └── main.jsx
+LeafLens/
 ├── backend/              # Node.js Express Server
 │   ├── routes/           # API Endpoints
 │   ├── controllers/      # Business logic & AI Integration
 │   ├── uploads/          # Temporary image storage
 │   └── server.js         # Entry point
+│── src/
+│── components/       # Reusable UI components (shadcn)
+│── pages/            # Application views
+│── main.jsx
 └── README.md
 
 ```
