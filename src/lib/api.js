@@ -1,9 +1,10 @@
 import axios from "axios";
 
-export const analyzePlant = async (file) => {
+export const analyzePlant = async (file ,language) => {
   try {
     const formData = new FormData();
     formData.append("image", file);
+    formData.append("language", language);
 
     const res = await axios.post(import.meta.env.VITE_BACKEND_URL + "/analyze", formData, {
       headers: { "Content-Type": "multipart/form-data" },

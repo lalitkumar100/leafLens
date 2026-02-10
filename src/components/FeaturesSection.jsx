@@ -1,4 +1,4 @@
-import { Brain, Zap, BookOpen } from 'lucide-react';
+import { Brain, Zap, BookOpen, Languages } from 'lucide-react';
 import FeatureCard from './FeatureCard';
 
 const FeaturesSection = () => {
@@ -12,6 +12,11 @@ const FeaturesSection = () => {
       icon: Zap,
       title: 'Instant Diagnosis',
       description: 'Get comprehensive health reports in seconds. No waiting, no appointments – just upload and receive immediate results.'
+    },
+    {
+      icon: Languages,
+      title: '10+ Indian Languages',
+      description: 'Accessible to everyone. Get reports in Hindi, Tamil, Telugu, Bengali, Marathi, Kannada, Malayalam, Gujarati, Punjabi, & Odia.'
     },
     {
       icon: BookOpen,
@@ -34,7 +39,8 @@ const FeaturesSection = () => {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 stagger-children">
+        {/* 🔹 Updated Grid: cols-1 (mobile), cols-2 (tablet), cols-4 (desktop) */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 stagger-children">
           {features.map((feature, index) => (
             <FeatureCard key={index} {...feature} />
           ))}

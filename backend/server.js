@@ -19,40 +19,56 @@ const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 // --- NEW CHAT ENDPOINT ---
 app.post("/chat", async (req, res) => {
   try {
-    const { message, reportContext, history } = req.body;
+    const { message, reportContext = {}, history = [] } = req.body;
 
-    // 1. Initialize the model with strict System Instructions
-    const model = genAI.getGenerativeModel({ 
-      model: "gemini-2.0-flash", // Using 2.0 or 1.5 as 2.5 is a future version
-      systemInstruction: `You are an expert AI Plant Doctor. 
-      The user is asking about a specific plant diagnosis: ${reportContext.plantName} with ${reportContext.disease}.
-      
-      CONSTRAINTS:
-      - ONLY discuss topics related to this specific plant or plant care in general.
-      - If the user asks about unrelated topics (politics, sports, coding, other random things), politely say: "I am sorry, but as your Plant Doctor, I am only allowed to discuss topics related to your ${reportContext.plantName} and its health."
-      - Use Markdown for your responses (bolding, lists).
-      - Reference the current report data if relevant: Severity is ${reportContext.severity}, Health Score is ${reportContext.healthScore}%.`
+    if (!message) {
+      return res.status(400).json({ error: "Message is required" });
+    }
+
+    // 🌿 Create model with plant context
+    const model = genAI.getGenerativeModel({
+      model: "gemini-2.5-flash",
+      systemInstruction: `You are an expert AI Plant Doctor.
+
+Plant: ${reportContext.plantName || "Unknown"}
+Disease: ${reportContext.disease || "Unknown"}
+Severity: ${reportContext.severity || "N/A"}
+Health Score: ${reportContext.healthScore || "N/A"}%
+
+Rules:
+- Only answer plant-health related questions.
+- If unrelated, say: "I can only help with plant health questions."
+- Use simple markdown formatting.`
     });
 
-    // 2. Format history for Gemini (roles must be 'user' or 'model')
-    const chatSession = model.startChat({
-      history: history.map(msg => ({
-        role: msg.role === "assistant" ? "model" : "user",
-        parts: [{ text: msg.content }],
-      })),
-    });
+    // 🧠 Format history safely for Gemini
+    let formattedHistory = history
+      .filter(m => m?.content)
+      .map(m => ({
+        role: m.role === "assistant" ? "model" : "user",
+        parts: [{ text: m.content }]
+      }));
 
-    // 3. Send the message
-    const result = await chatSession.sendMessage(message);
-    const responseText = result.response.text();
+    // ❗ Gemini rule: first message must be user
+    if (formattedHistory.length > 0 && formattedHistory[0].role !== "user") {
+      formattedHistory.shift();
+    }
 
-    res.status(200).json({ reply: responseText });
+    // 💬 Start chat session
+    const chat = model.startChat({ history: formattedHistory });
+
+    // 🚀 Send new message
+    const result = await chat.sendMessage(message);
+    const reply = result.response.text();
+
+    res.json({ reply });
 
   } catch (err) {
-    console.error("Chat Error:", err);
-    res.status(500).json({ error: "The Plant Doctor is currently unavailable." });
+    console.error("Chat Error:", err.message);
+    res.status(500).json({ error: "Chat service unavailable" });
   }
 });
+
 
 // --- EXISTING ANALYZE ENDPOINT ---
 app.post("/analyze", upload.single("image"), async (req, res) => {
@@ -61,10 +77,10 @@ app.post("/analyze", upload.single("image"), async (req, res) => {
 
     const imageBuffer = fs.readFileSync(req.file.path);
     const base64Image = imageBuffer.toString("base64");
-
+    const language = req.body.language || "en"; // Default to English if not provided
     const result = await model.generateContent([
       {
-        text: `You are a plant disease AI. Analyze this leaf image and return ONLY JSON in this structure: if it not img of plant leaf, respond with empty values with "isPlantLeaf": false.
+        text: `You are a plant disease AI. Analyze this leaf image and return ONLY JSON in this structure: if it not img of plant leaf, respond with empty values with "isPlantLeaf": false.and a message "Not a plant leaf image". The JSON structure is: and  use ${language} for any text in the response (like disease name, care tips, etc.): but label the keys in English.
 
 {
   "isPlantLeaf": false,

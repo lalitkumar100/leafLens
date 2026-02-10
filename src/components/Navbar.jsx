@@ -9,14 +9,36 @@ const Navbar = () => {
   const location = useLocation();
 
   const navLinks = [
-    { name: 'Home', path: '/' },
-    { name: 'About', path: '/#about' },
-    { name: 'How It Works', path: '/#how-it-works' },
+    { name: 'Home', path: '/', hash: '#home' },
+    { name: 'About', path: '/', hash: '#about' },
+    { name: 'How It Works', path: '/', hash: '#how-it-works' },
   ];
 
-  const isActive = (path) => {
-    if (path === '/') return location.pathname === '/';
-    return location.pathname === path || location.hash === path.replace('/', '');
+  // 🔹 Custom Handler for Navigation
+  const handleNavClick = (e, link) => {
+    e.preventDefault(); // Prevent default anchor behavior
+    setIsMenuOpen(false);
+
+    // 1. If we are already on the home page
+    if (location.pathname === '/') {
+      const element = document.getElementById(link.hash.replace('#', ''));
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
+        // Update URL hash without reloading
+        window.history.pushState(null, '', link.hash);
+      } else {
+          // If element doesn't exist (e.g. top of page), scroll top
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    } 
+    // 2. If we are on another page (e.g., /scan), navigate to home with hash
+    else {
+      navigate(`${link.path}${link.hash}`);
+    }
+  };
+
+  const isActive = (hash) => {
+    return location.hash === hash || (location.pathname === '/' && hash === '#home' && !location.hash);
   };
 
   return (
@@ -34,15 +56,16 @@ const Navbar = () => {
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center gap-8">
             {navLinks.map((link) => (
-              <Link
+              <a
                 key={link.name}
-                to={link.path}
-                className={`text-sm font-medium transition-colors hover:text-primary ${
-                  isActive(link.path) ? 'text-primary' : 'text-muted-foreground'
+                href={`${link.path}${link.hash}`} // Fallback for SEO/Hover
+                onClick={(e) => handleNavClick(e, link)}
+                className={`text-sm font-medium transition-colors hover:text-primary cursor-pointer ${
+                  isActive(link.hash) ? 'text-primary' : 'text-muted-foreground'
                 }`}
               >
                 {link.name}
-              </Link>
+              </a>
             ))}
           </div>
 
@@ -70,16 +93,16 @@ const Navbar = () => {
           <div className="md:hidden py-4 border-t border-border/50 animate-fade-in">
             <div className="flex flex-col gap-4">
               {navLinks.map((link) => (
-                <Link
+                <a
                   key={link.name}
-                  to={link.path}
-                  onClick={() => setIsMenuOpen(false)}
+                  href={`${link.path}${link.hash}`}
+                  onClick={(e) => handleNavClick(e, link)}
                   className={`text-sm font-medium transition-colors hover:text-primary ${
-                    isActive(link.path) ? 'text-primary' : 'text-muted-foreground'
+                    isActive(link.hash) ? 'text-primary' : 'text-muted-foreground'
                   }`}
                 >
                   {link.name}
-                </Link>
+                </a>
               ))}
               <Button 
                 onClick={() => {
