@@ -19,7 +19,7 @@ import ImagePreview from "@/components/ImagePreview";
 import ScanningIndicator from "@/components/ScanningIndicator";
 import PlantReport from "@/components/PlantReport";
 import ChatBox from "@/components/ChatBox";
-
+ // 🔹 Import the new component
 // 🔹 1. Define Indian Languages
 const INDIAN_LANGUAGES = [
   { code: "en", name: "English" },

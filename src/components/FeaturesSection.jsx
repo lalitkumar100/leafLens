@@ -1,4 +1,4 @@
-import { Brain, Zap, BookOpen, Languages } from 'lucide-react';
+import { Brain, Zap, BookOpen, Languages, Bot } from 'lucide-react';
 import FeatureCard from './FeatureCard';
 
 const FeaturesSection = () => {
@@ -22,6 +22,11 @@ const FeaturesSection = () => {
       icon: BookOpen,
       title: 'Complete Care Guide',
       description: 'Receive detailed treatment plans, prevention tips, and personalized care schedules tailored to your specific plant species.'
+    },
+     {
+      icon: Bot,
+      title: 'AI-Powered Care Assistant',
+      description: 'Get personalized care recommendations powered by AI, tailored to your specific plant species and growing conditions.'
     }
   ];
 
